@@ -7,7 +7,7 @@
 var DEBUG_MODE = true;
 
 // this can be used to set the number of sliders to show
-var NUM_SLIDERS = 3;
+var NUM_SLIDERS = 12;
 
 // other variables can be in here too
 // here's some examples for colors used
@@ -43,7 +43,9 @@ function Face() {
   this.upperLip = -1.5;
   this.lowerLip = -3;
   this.tilt_value = 0;
+  this.color_value = 1
 
+  // color_value
 
   // Colours
   this.Brown_1 = color('#ffa257');
@@ -196,7 +198,7 @@ function Face() {
       vertex(-3, 2.5);
         bezierVertex(-(this.cornerX +5), (this.cornerY +2.25), -(this.cornerX +5), (this.cornerY +3.5), -(this.cornerX +4), (this.cornerY +4.5));
         bezierVertex(-(this.cornerX +4.5), (this.cornerY +3.5), -(this.cornerX +4.5), (this.cornerY +2.25), -3, 2.5);
-    endShape();   this.
+    endShape();
 
     beginShape();
       vertex(3, 2.5);
@@ -205,7 +207,7 @@ function Face() {
     endShape();
 
     // Chin Detail * not drawn if lower lip/mouth corners are too far down.
-    if(mouthCorners == 2 && lowerLip <= -2.4){
+    if(this.mouthCorners == 2 && this.lowerLip <= -2.4){
       noStroke(0);
       fill(0);
 
@@ -216,7 +218,7 @@ function Face() {
       endShape();
     }
 
-    else if(mouthCorners <= 1.90 && lowerLip <= -1.6) {
+    else if(this.mouthCorners <= 1.90 && this.lowerLip <= -1.6) {
       noStroke(0);
       fill(0);
 
@@ -242,6 +244,7 @@ function Face() {
     this.upperLip = map(settings[8], 0, 100, -2.5, 0);
     this.lowerLip = map(settings[9], 0, 100, -5, 0);
     this.tilt_value = map(settings[10], 0, 100, -20, 20);
+    this.color_value = int(map(settings[11], 0, 100, 0, 4));
 
   }
 
@@ -260,11 +263,13 @@ function Face() {
     settings[8] = map(this.upperLip, -2.5, 0, 0, 100);
     settings[9] = map(this.lowerLip, -5, 0, 0, 100);
     settings[10] = map(this.tilt_value, -20, 20, 0, 100);
+    settings[11] = int(map(this.color_value, 0, 4, 0, 100));
 
     return settings;
   }
 }
 
+// colorChoice
 
   // this.detailColour = [204, 136, 17];
   // this.mainColour = [51, 119, 153];
