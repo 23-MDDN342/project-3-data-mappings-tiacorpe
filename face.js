@@ -33,15 +33,15 @@ function Face() {
   // (your variables should be different!)
 
   this.eyeBHead = 0;
-  this.eyeBEnd = 1;
+  this.eyeBEnd = 0.2;
   this.eyeInner = 0;
-  this.eyeOuter = -0.25;
+  this.eyeOuter = -0.05;
   this.upperEye = 0;
   this.lowerEye = 0;
   this.mouthWidth = 0;
-  this.mouthCorners = 1;
-  this.upperLip = -1.5;
-  this.lowerLip = -3;
+  this.mouthCorners = 0.2;
+  this.upperLip = -0.3;
+  this.lowerLip = -0.6;
   this.tilt_value = 0;
   this.color_value = 1
 
@@ -58,33 +58,33 @@ function Face() {
 
   // Mask Vertex Variables
   // Top left
-    this.x1 = -9.5;
-    this.y1 = -9.5;
+    this.x1 = -1.9;
+    this.y1 = -1.9;
   // Top right
-    this.x2 = 9.5;
-    this.y2 = -9.5;
+    this.x2 = 1.9;
+    this.y2 = -1.9;
   // Bottom right
-    this.x3 = 9;
-    this.y3 = 1;
+    this.x3 = 1.8;
+    this.y3 = 0.2;
   // Bottom middle
     this.x4 = 0;
-    this.y4 = 9.5;
+    this.y4 = 1.9;
   // Bottom left
-    this.x5 = -9;
-    this.y5 = 1;
+    this.x5 = -1.8;
+    this.y5 = 0.2;
 
   // Variables for the upper, vertical sides of the mask/face.
-    this.vert_X = 9;
-    this.vert_Y1 = 1;
-    this.vert_Y2 = 1;
+    this.vert_X = 1.8;
+    this.vert_Y1 = 0.2;
+    this.vert_Y2 = 0.2;
 
   // Variables for the lower, angled sides of the mask/face.
-    this.angle_X1 = 8;
-    this.angle_Y1 = 9.5;
-    this.angle_X2 = 4;
-    this.angle_Y2 = 8;
+    this.angle_X1 = 1.6;
+    this.angle_Y1 = 1.9;
+    this.angle_X2 = 0.8;
+    this.angle_Y2 = 1.6;
 
-    this.chinY = 6.5;
+    this.chinY = 1.3;
 
 
   /*
@@ -92,10 +92,8 @@ function Face() {
    *    chin, right_eye, left_eye, right_eyebrow, left_eyebrow
    *    bottom_lip, top_lip, nose_tip, nose_bridge, 
    */  
-  this.draw = function(positions) {
-    push();
-    scale(0.2);
 
+  this.draw = function(positions) {
     // Tilt Value
     angleMode(DEGREES);
     rotate(this.tilt_value);
@@ -104,12 +102,12 @@ function Face() {
     noStroke();
     fill(0);
     beginShape();
-      vertex((this.x1 -0.5), (this.y1 -0.5));
-        bezierVertex(0, -8.5, 0, -8.5, (this.x2 +0.5), (this.y2 -0.5)); // TLeft->TRight
-        bezierVertex((this.vert_X +0.5), this.vert_Y1, (this.vert_X +0.5), this.vert_Y2, (this.x3 +0.5), this.y3); // TRight->BRight *
-        bezierVertex((this.angle_X1 +0.5), this.angle_Y1, (this.angle_X2 +0.5), (this.angle_Y2 +0.5), this.x4, (this.y4 +0.5)); // BRight->BMiddle %
-        bezierVertex(-(this.angle_X2 +0.5), (this.angle_Y2 +0.5), -(this.angle_X1 +0.5), this.angle_Y1, (this.x5 -0.5), this.y5); // BMiddle->BLeft %
-        bezierVertex(-(this.vert_X +0.5), this.vert_Y2, -(this.vert_X +0.5), this.vert_Y1, (this.x1 -0.5), this.y1); // BLeft->TLeft *
+      vertex((this.x1 -0.1), (this.y1 -0.1));
+        bezierVertex(0, -1.7, 0, -1.7, (this.x2 +0.1), (this.y2 -0.1)); // TLeft->TRight
+        bezierVertex((this.vert_X +0.1), this.vert_Y1, (this.vert_X +0.1), this.vert_Y2, (this.x3 +0.1), this.y3); // TRight->BRight *
+        bezierVertex((this.angle_X1 +0.1), this.angle_Y1, (this.angle_X2 +0.1), (this.angle_Y2 +0.1), this.x4, (this.y4 +0.1)); // BRight->BMiddle %
+        bezierVertex(-(this.angle_X2 +0.1), (this.angle_Y2 +0.1), -(this.angle_X1 +0.1), this.angle_Y1, (this.x5 -0.1), this.y5); // BMiddle->BLeft %
+        bezierVertex(-(this.vert_X +0.1), this.vert_Y2, -(this.vert_X +0.1), this.vert_Y1, (this.x1 -0.1), this.y1); // BLeft->TLeft *
     endShape();
 
     // Face Mask
@@ -118,7 +116,7 @@ function Face() {
 
     beginShape();
       vertex(this.x1, this.y1);
-        bezierVertex(0, -8, 0, -8, this.x2, this.y2); // TLeft->TRight
+        bezierVertex(0, -1.6, 0, -1.6, this.x2, this.y2); // TLeft->TRight
         bezierVertex(this.vert_X, this.vert_Y1, this.vert_X, this.vert_Y2, this.x3, this.y3); // TRight->BRight *
         bezierVertex(this.angle_X1, this.angle_Y1, this.angle_X2, this.angle_Y2, this.x4, this.y4); // BRight->BMiddle %
         bezierVertex(-this.angle_X2, this.angle_Y2, -this.angle_X1, this.angle_Y1, this.x5, this.y5); // BMiddle->BLeft %
@@ -130,11 +128,11 @@ function Face() {
     fill(0);
 
     beginShape();
-      vertex(-2.75, 0.75); 
-        bezierVertex(-1, -0.3, -0.9, 0.4, 0, 0.5);
-        bezierVertex(0.9, 0.4, 1, -0.3, 2.75, 0.75);
-        bezierVertex(1, 0.5, 0.9, 1, 0, 1);
-        bezierVertex(-0.9, 1, -1, 0.5, -2.75, 0.75);
+      vertex(-0.55, 0.15); 
+        bezierVertex(-0.2, -0.06, -0.18, 0.08, 0, 0.1);
+        bezierVertex(0.18, 0.08, 0.2, -0.06, 0.55, 0.15);
+        bezierVertex(0.2, 0.1, 0.18, 0.2, 0, 0.2);
+        bezierVertex(-0.18, 0.2, -0.2, 0.1, -0.55, 0.15);
     endShape();
 
     ///////// EYEBROWS /////////
@@ -145,15 +143,15 @@ function Face() {
     this.outer_browY = this.eyeBEnd;
 
     beginShape();
-      vertex(-1, (this.inner_browY -6));
-        bezierVertex(-2, (this.inner_browY -3), -6, (this.outer_browY -8), -8, (this.outer_browY -5));
-        bezierVertex(-6, (this.outer_browY -7), -2, (this.inner_browY -2.5), -1, (this.inner_browY -6));
+      vertex(-0.2, (this.inner_browY -1.2));
+        bezierVertex(-0.4, (this.inner_browY -0.6), -1.2, (this.outer_browY -1.6), -1.6, (this.outer_browY -1));
+        bezierVertex(-1.2, (this.outer_browY -1.4), -0.4, (this.inner_browY -0.5), -0.2, (this.inner_browY -1.2));
     endShape();
     
     beginShape();
-      vertex(1, (this.inner_browY-6));
-        bezierVertex(2, (this.inner_browY -3), 6, (this.outer_browY -8), 8, (this.outer_browY -5));
-        bezierVertex(6, (this.outer_browY -7), 2, (this.inner_browY -2.5), 1, (this.inner_browY -6));
+      vertex(0.2, (this.inner_browY-1.2));
+        bezierVertex(0.4, (this.inner_browY -0.6), 1.2, (this.outer_browY -1.6), 1.6, (this.outer_browY -1));
+        bezierVertex(1.2, (this.outer_browY -1.4), 0.4, (this.inner_browY -0.5), 0.2, (this.inner_browY -1.2));
     endShape();
 
 
@@ -167,15 +165,15 @@ function Face() {
     this.lower_eyeY = this.lowerEye;
 
     beginShape();
-      vertex(-1.75, (this.inner_eyeY -2.25));
-        bezierVertex(-4, (this.upper_eyeY -4), -5, (this.upper_eyeY -4), -6.75, this.outer_eyeY-2);
-        bezierVertex(-5, (this.lower_eyeY -2.5), -4, (this.lower_eyeY -2.5), -1.75, this.inner_eyeY-2.25);
+      vertex(-0.35, (this.inner_eyeY -0.45));
+        bezierVertex(-0.8, (this.upper_eyeY -0.8), -1, (this.upper_eyeY -0.8), -1.35, this.outer_eyeY-0.4);
+        bezierVertex(-1, (this.lower_eyeY -0.5), -0.8, (this.lower_eyeY -0.5), -0.35, this.inner_eyeY-0.45);
     endShape();
 
     beginShape();
-      vertex(1.75, (this.inner_eyeY -2.25));
-        bezierVertex(4, (this.upper_eyeY -4), 5, (this.upper_eyeY -4), 6.75, (this.outer_eyeY -2));
-        bezierVertex(5, (this.lower_eyeY -2.5), 4, (this.lower_eyeY -2.5), 1.75, (this.inner_eyeY -2.25));
+      vertex(0.35, (this.inner_eyeY -0.45));
+        bezierVertex(0.8, (this.upper_eyeY -0.8), 1, (this.upper_eyeY -0.8), 1.35, (this.outer_eyeY -0.4));
+        bezierVertex(1, (this.lower_eyeY -0.5), 0.8, (this.lower_eyeY -0.5), 0.35, (this.inner_eyeY -0.45));
     endShape();
 
     ///////// MOUTH /////////
@@ -188,62 +186,62 @@ function Face() {
     
     // Mouth
     beginShape();
-      vertex(-(this.cornerX +4), (this.cornerY +3));
-        bezierVertex(0, (this.upperL +4), 0, (this.upperL +4), (this.cornerX +4), (this.cornerY +3));
-        bezierVertex(0, (this.lowerL +9), 0, (this.lowerL +9), -(this.cornerX +4), (this.cornerY +3));
+      vertex(-(this.cornerX +0.8), (this.cornerY +0.6));
+        bezierVertex(0, (this.upperL +0.8), 0, (this.upperL +0.8), (this.cornerX +0.8), (this.cornerY +0.6));
+        bezierVertex(0, (this.lowerL +1.8), 0, (this.lowerL +1.8), -(this.cornerX +0.8), (this.cornerY +0.6));
     endShape();
     
     // Smile Lines * Left to Right
     beginShape();
-      vertex(-3, 2.5);
-        bezierVertex(-(this.cornerX +5), (this.cornerY +2.25), -(this.cornerX +5), (this.cornerY +3.5), -(this.cornerX +4), (this.cornerY +4.5));
-        bezierVertex(-(this.cornerX +4.5), (this.cornerY +3.5), -(this.cornerX +4.5), (this.cornerY +2.25), -3, 2.5);
+      vertex(-0.6, 0.5);
+        bezierVertex(-(this.cornerX +1), (this.cornerY +0.45), -(this.cornerX +1), (this.cornerY +0.7), -(this.cornerX +0.8), (this.cornerY +0.9));
+        bezierVertex(-(this.cornerX +0.9), (this.cornerY +0.7), -(this.cornerX +0.9), (this.cornerY +0.45), -0.6, 0.5);
     endShape();
 
     beginShape();
-      vertex(3, 2.5);
-        bezierVertex((this.cornerX +5), (this.cornerY +2.25), (this.cornerX +5), (this.cornerY +3.5), (this.cornerX +4), (this.cornerY +4.5));
-        bezierVertex((this.cornerX +4.5), (this.cornerY +3.5), (this.cornerX +4.5), (this.cornerY +2.25), 3, 2.5);
+      vertex(0.6, 0.5);
+        bezierVertex((this.cornerX +1), (this.cornerY +0.45), (this.cornerX +1), (this.cornerY +0.7), (this.cornerX +0.8), (this.cornerY +0.9));
+        bezierVertex((this.cornerX +0.9), (this.cornerY +0.7), (this.cornerX +0.9), (this.cornerY +0.45), 0.6, 0.5);
     endShape();
 
     // Chin Detail * not drawn if lower lip/mouth corners are too far down.
-    if(this.mouthCorners == 2 && this.lowerLip <= -2.4){
+    if(this.mouthCorners == 0.4 && this.lowerLip <= -0.48){
       noStroke(0);
       fill(0);
 
       beginShape();
         vertex(0, this.chinY); 
-          bezierVertex(0.6, (this.chinY +0.5), 0.6, (this.chinY +1), 0, (this.chinY +1.5));
-          bezierVertex(1, (this.chinY +1), 1, (this.chinY +0.5), 0, this.chinY);
+          bezierVertex(0.12, (this.chinY +0.1), 0.12, (this.chinY +0.2), 0, (this.chinY +0.3));
+          bezierVertex(0.2, (this.chinY +0.2), 0.2, (this.chinY +0.1), 0, this.chinY);
       endShape();
     }
 
-    else if(this.mouthCorners <= 1.90 && this.lowerLip <= -1.6) {
+    else if(this.mouthCorners <= 0.38 && this.lowerLip <= -0.32) {
       noStroke(0);
       fill(0);
 
       beginShape();
         vertex(0, this.chinY); 
-          bezierVertex(0.6, (this.chinY +0.5), 0.6, (this.chinY +1), 0, (this.chinY +1.5));
-          bezierVertex(1, (this.chinY +1), 1, (this.chinY +0.5), 0, this.chinY);
+          bezierVertex(0.12, (this.chinY +0.1), 0.12, (this.chinY +0.2), 0, (this.chinY +0.3));
+
+          bezierVertex(0.2, (this.chinY +0.2), 0.2, (this.chinY +0.1), 0, this.chinY);
       endShape();
     }
-    pop();
   };
 
   /* set internal properties based on list numbers 0-100 */
   this.setProperties = function(settings) {
-    this.eyeBHead = map(settings[0], 0, 100, -1, 1);
-    this.eyeBEnd = map(settings[1], 0, 100, 0, 2);
-    this.eyeInner = map(settings[2], 0, 100, -0.5, 0.5);
-    this.eyeOuter = map(settings[3], 0, 100, -0.5, 0);
-    this.upperEye = map(settings[4], 0, 100, -0.5, 0.5);
-    this.lowerEye = map(settings[5], 0, 100, -1.5, 1.5);
-    this.mouthWidth = map(settings[6], 0, 100, -1, 0.5);
-    this.mouthCorners = map(settings[7], 0, 100, 0, 2);
-    this.upperLip = map(settings[8], 0, 100, -2.5, 0);
-    this.lowerLip = map(settings[9], 0, 100, -5, 0);
-    this.tilt_value = map(settings[10], 0, 100, -20, 20);
+    this.eyeBHead = map(settings[0], 0, 100, -0.2, 0.2);
+    this.eyeBEnd = map(settings[1], 0, 100, 0, 0.4);
+    this.eyeInner = map(settings[2], 0, 100, -0.1, 0.1);
+    this.eyeOuter = map(settings[3], 0, 100, -0.1, 0);
+    this.upperEye = map(settings[4], 0, 100, -0.1, 0.1);
+    this.lowerEye = map(settings[5], 0, 100, -0.3, 0.3);
+    this.mouthWidth = map(settings[6], 0, 100, -0.2, 0.1);
+    this.mouthCorners = map(settings[7], 0, 100, 0, 0.4);
+    this.upperLip = map(settings[8], 0, 100, -0.5, 0);
+    this.lowerLip = map(settings[9], 0, 100, -1, 0);
+    this.tilt_value = map(settings[10], 0, 100, -4, 4);
     this.color_value = int(map(settings[11], 0, 100, 0, 4));
 
   }
@@ -252,17 +250,17 @@ function Face() {
   this.getProperties = function() {
     let settings = new Array(3);
   
-    settings[0] = map(this.eyeBHead, -1, 1, 0, 100);
-    settings[1] = map(this.eyeBEnd, 0, 2, 0, 100);
-    settings[2] = map(this.eyeInner, -0.5, 0.5, 0, 100);
-    settings[3] = map(this.eyeOuter, -0.5, 0, 0, 100);
-    settings[4] = map(this.upperEye, -0.5, 0.5, 0, 100);
-    settings[5] = map(this.lowerEye, -1.5, 1.5, 0, 100);
-    settings[6] = map(this.mouthWidth, -1, 0.5, 0, 100);
-    settings[7] = map(this.mouthCorners, 0, 2, 0, 100);
-    settings[8] = map(this.upperLip, -2.5, 0, 0, 100);
-    settings[9] = map(this.lowerLip, -5, 0, 0, 100);
-    settings[10] = map(this.tilt_value, -20, 20, 0, 100);
+    settings[0] = map(this.eyeBHead, -0.2, 0.2, 0, 100);
+    settings[1] = map(this.eyeBEnd, 0, 0.4, 0, 100);
+    settings[2] = map(this.eyeInner, -0.1, 0.1, 0, 100);
+    settings[3] = map(this.eyeOuter, -0.1, 0, 0, 100);
+    settings[4] = map(this.upperEye, -0.1, 0.1, 0, 100);
+    settings[5] = map(this.lowerEye, -0.3, 0.3, 0, 100);
+    settings[6] = map(this.mouthWidth, -0.2, 0.1, 0, 100);
+    settings[7] = map(this.mouthCorners, 0, 0.4, 0, 100);
+    settings[8] = map(this.upperLip, -0.5, 0, 0, 100);
+    settings[9] = map(this.lowerLip, -1, 0, 0, 100);
+    settings[10] = map(this.tilt_value, -4, 4, 0, 100);
     settings[11] = int(map(this.color_value, 0, 4, 0, 100));
 
     return settings;
