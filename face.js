@@ -37,26 +37,24 @@ function Face() {
   this.vibe_value = 1 // Range; 0-1 [2 values]
  
   // SKIN TONE Mask Colours
-    this.STone_1 = color('#FFA257');
-    this.STone_2 = color('#D17D38');
-    this.STone_3 = color('#994F12');
-    this.STone_4 = color('#823B00');
+    this.STone_1 = color('#e6e6e6');
+    this.STone_2 = color('#808080');
+    this.STone_3 = color('#454545');
 
-    colorOptions = [this.STone_1, this.STone_2, this.STone_3, this.STone_4]
+    colorOptions = [this.STone_1, this.STone_2, this.STone_3]
     // (colorOptions[this.skin_value])
 
   // HAIR DARKNESS Backing Colours
-    this.HDark_1 = color('#DF8E4C');
-    this.HDark_2 = color('#9D5E2A');
-    this.HDark_3 = color('#733B0E');
-    this.HDark_4 = color('#622C00');
+    this.HDark_1 = color('#e6e6e6');
+    this.HDark_2 = color('#808080');
+    this.HDark_3 = color('#454545');
 
-    hairOptions = [this.HDark_1, this.HDark_2, this.HDark_3, this.HDark_4]
+    hairOptions = [this.HDark_1, this.HDark_2, this.HDark_3]
     // (hairOptions[this.hair_value])
 
   // MASCULINE VS. FEMININE Accent Colours
-    this.fem = color('#FFD0A7');
-    this.masc = color('#C97510');
+    this.fem = color('#e6e6e6');
+    this.masc = color('#808080');
 
     mascVfemOptions = [this.fem, this.masc]
 
@@ -374,125 +372,19 @@ function Face() {
 
   /* set internal properties based on list numbers 0-100 */
   this.setProperties = function(settings) {
-    this.skin_value = int(map(settings[0], 0, 3, 0, 3));
-    this.hair_value = int(map(settings[1], 0, 3, 0, 3));
-    this.vibe_value = int(map(settings[2], 0, 3, 0, 1));
+    this.skin_value = int(map(settings[0], 0, 100, 0, 2));
+    this.hair_value = int(map(settings[1], 0, 100, 0, 2));
+    this.vibe_value = int(map(settings[2], 0, 100, 0, 1));
 
   }
 
   /* get internal properties as list of numbers 0-100 */
   this.getProperties = function() {
     let settings = new Array(3);
-    settings[0] = int(map(this.skin_value, 0, 3, 0, 3));
-    settings[1] = int(map(this.hair_value, 0, 3, 0, 3));
-    settings[2] = int(map(this.vibe_value, 0, 1, 0, 3));
+    settings[0] = int(map(this.skin_value, 0, 2, 0, 100));
+    settings[1] = int(map(this.hair_value, 0, 2, 0, 100));
+    settings[2] = int(map(this.vibe_value, 0, 1, 0, 100));
 
     return settings;
   }
 }
-
-// colorChoice
-
-  // this.detailColour = [204, 136, 17];
-  // this.mainColour = [51, 119, 153];
-  // this.num_eyes = 2;    // can be either 1 (cyclops) or 2 (two eyes)
-  // this.eye_shift = -1;   // range is -10 to 10
-  // this.mouth_size = 1;  // range is 0.5 to 8
-
-  // this.chinColour = [153, 153, 51]
-  // this.lipColour = [136, 68, 68]
-  // this.eyebrowColour = [119, 85, 17]
-
- //   console.log()
-  //   // head
-  //   ellipseMode(CENTER);
-  //   stroke(stroke_color);
-  //   fill(this.mainColour);
-  //   ellipse(segment_average(positions.chin)[0], 0, 3, 4);
-  //   noStroke();
-
-
-  //   // mouth
-  //   fill(this.detailColour);
-  //   ellipse(segment_average(positions.bottom_lip)[0], segment_average(positions.bottom_lip)[1], 1.36, 0.25 * this.mouth_size);
-
-  //   // eyebrows
-  //   fill( this.eyebrowColour);
-  //   stroke( this.eyebrowColour);
-  //   strokeWeight(0.08);
-  //   this.draw_segment(positions.left_eyebrow);
-  //   this.draw_segment(positions.right_eyebrow);
-
-  //   // draw the chin segment using points
-  //   fill(this.chinColour);
-  //   stroke(this.chinColour);
-  //   this.draw_segment(positions.chin);
-
-  //   fill(100, 0, 100);
-  //   stroke(100, 0, 100);
-  //   this.draw_segment(positions.nose_bridge);
-  //   this.draw_segment(positions.nose_tip);
-
-  //   strokeWeight(0.03);
-
-  //   fill(this.lipColour);
-  //   stroke(this.lipColour);
-  //   this.draw_segment(positions.top_lip);
-  //   this.draw_segment(positions.bottom_lip);
-
-  //   let left_eye_pos = segment_average(positions.left_eye);
-  //   let right_eye_pos = segment_average(positions.right_eye);
-
-  //   // eyes
-  //   noStroke();
-  //   let curEyeShift = 0.04 * this.eye_shift;
-  //   if(this.num_eyes == 2) {
-  //     fill(this.detailColour);
-  //     ellipse(left_eye_pos[0], left_eye_pos[1], 0.5, 0.33);
-  //     ellipse(right_eye_pos[0], right_eye_pos[1], 0.5, 0.33);
-
-  //     // fill(this.mainColour);
-  //     // ellipse(left_eye_pos[0] + curEyeShift, left_eye_pos[1], 0.18);
-  //     // ellipse(right_eye_pos[0] + curEyeShift, right_eye_pos[1], 0.18);
-  //   }
-  //   else {
-  //     let eyePosX = (left_eye_pos[0] + right_eye_pos[0]) / 2;
-  //     let eyePosY = (left_eye_pos[1] + right_eye_pos[1]) / 2;
-
-  //     fill(this.detailColour);
-  //     ellipse(eyePosX, eyePosY, 0.45, 0.27);
-
-  //     fill(this.mainColour);
-  //     ellipse(eyePosX - 0.1 + curEyeShift, eyePosY, 0.18);
-  //   }
-  //  // fill(0)
-  //  //ellipse(0,0, 0.5,0.5) center point
-  //  //rect(-2,-2,4.5,4) sizing debug 
-  // }
-
-  // // example of a function *inside* the face object.
-  // // this draws a segment, and do_loop will connect the ends if true
-  // this.draw_segment = function(segment, do_loop) {
-  //   for(let i=0; i<segment.length; i++) {
-  //       let px = segment[i][0];
-  //       let py = segment[i][1];
-  //       ellipse(px, py, 0.1);
-  //       if(i < segment.length - 1) {
-  //         let nx = segment[i+1][0];
-  //         let ny = segment[i+1][1];
-  //         line(px, py, nx, ny);
-  //       }
-  //       else if(do_loop) {
-  //         let nx = segment[0][0];
-  //         let ny = segment[0][1];
-  //         line(px, py, nx, ny);
-  //       }
-  //   }
-
-
-    // this.num_eyes = int(map(settings[0], 0, 100, 1, 2));
-    // this.eye_shift = map(settings[1], 0, 100, -2, 2);
-    // this.mouth_size = map(settings[2], 0, 100, 0.5, 8);
-    // settings[0] = map(this.num_eyes, 1, 2, 0, 100);
-    // settings[1] = map(this.eye_shift, -2, 2, 0, 100);
-    // settings[2] = map(this.mouth_size, 0.5, 8, 0, 100);
