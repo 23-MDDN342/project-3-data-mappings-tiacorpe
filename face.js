@@ -4,7 +4,7 @@
  */  
 
 // remove this or set to false to enable full program (load will be slower)
-var DEBUG_MODE = false;
+var DEBUG_MODE = true;
 
 // this can be used to set the number of sliders to show
 var NUM_SLIDERS = 3;
@@ -374,18 +374,18 @@ function Face() {
 
   /* set internal properties based on list numbers 0-100 */
   this.setProperties = function(settings) {
-    this.skin_value = int(map(settings[0], 0, 100, 0, 3));
-    this.hair_value = int(map(settings[1], 0, 100, 0, 3));
-    this.vibe_value = int(map(settings[2], 0, 100, 0, 1));
+    this.skin_value = int(map(settings[0], 0, 3, 0, 3));
+    this.hair_value = int(map(settings[1], 0, 3, 0, 3));
+    this.vibe_value = int(map(settings[2], 0, 3, 0, 1));
 
   }
 
   /* get internal properties as list of numbers 0-100 */
   this.getProperties = function() {
     let settings = new Array(3);
-    settings[0] = int(map(this.skin_value, 0, 3, 0, 100));
-    settings[1] = int(map(this.hair_value, 0, 3, 0, 100));
-    settings[2] = int(map(this.vibe_value, 0, 1, 0, 100));
+    settings[0] = int(map(this.skin_value, 0, 3, 0, 3));
+    settings[1] = int(map(this.hair_value, 0, 3, 0, 3));
+    settings[2] = int(map(this.vibe_value, 0, 1, 0, 3));
 
     return settings;
   }

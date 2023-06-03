@@ -2,7 +2,4 @@
 [![Open in Visual Studio Code](https://classroom.github.com/assets/open-in-vscode-718a45dd9cf7e7f842a935f5ebbe5719a5e09af4491e668f4dbf3b35d5cca122.svg)](https://classroom.github.com/online_ide?assignment_repo_id=11103455&assignment_repo_type=AssignmentRepo)
 ## 2023 MDDN342 Assignment 3: Data Mappings
 
-Just added in some images of actors to use. I like the idea that the mask kind of serves as a reminder that they're playing (mostly) fictional characters, and that it's not indicative of them as an individual.
-
-PHOTO REFERENCES
-https://www.marvel.com/movies
+Finished training but had to do so twice and adjust the slider settings, becuse sometimes the slider would be off by like one point in postion and show the previous colour. I changed the sliders to go from 0 - 3 to fix it.

@@ -140,7 +140,7 @@ function setup () {
 
   /* create the sliders */
   for(i=1; i<=NUM_SLIDERS; i++) {
-    var slider = createSlider(0, 100, 50);
+    var slider = createSlider(0, 3, 1);
     var parentStr = 'slider' + i + 'Container';
     slider.parent(parentStr);
     sliders.push(slider);
@@ -156,7 +156,7 @@ function setup () {
   facePointsCheckbox.parent('checkbox3Container');
 
   if(!DEBUG_MODE) {
-    sliderTint = createSlider(0, 100, 10);
+    sliderTint = createSlider(0, 3, 1);
     sliderTint.parent("sliderTintContainer");
 
     var interpButton = createButton('interpolate');
