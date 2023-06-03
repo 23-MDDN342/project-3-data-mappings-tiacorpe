@@ -2,9 +2,7 @@
 [![Open in Visual Studio Code](https://classroom.github.com/assets/open-in-vscode-718a45dd9cf7e7f842a935f5ebbe5719a5e09af4491e668f4dbf3b35d5cca122.svg)](https://classroom.github.com/online_ide?assignment_repo_id=11103455&assignment_repo_type=AssignmentRepo)
 ## 2023 MDDN342 Assignment 3: Data Mappings
 
-So obviously got a bit ahead of myself with the sliders and made them like they were in project 2, but they've been a little helpful so far at deciding what characteristics I want to train with etc. At this stage I think I'll have 3+ sliders:
-- S1; Changes the mask colour based on the skin tone [4 values].
-- S2; Changes the backing mask colour based on hair colour/darkness? [3-4 values].
-- S3; Changes eye colour based on masc./fem. features [2 values].
+Just added in some images of actors to use. I like the idea that the mask kind of serves as a reminder that they're playing (mostly) fictional characters, and that it's not indicative of them as an individual.
 
-I've adjusted all the features to move in regards to the face points. Intially I was considerting having preset faces, and having those be decided based on the individuals differences, but I like being able to see the variety of masks that this creates more. At most, I think I'd do one more slider, max., to represent the difference, but I'm not sure yet what else it'd track/change so I may very well end up sticking to the minimum requirent of 3. One thing that I'm happy with is how the mask adjusts to the chin shape. In my project 2 code, the mask was more curvy/smooth, whereas this one has more visible corners. I chose to keep these because I quite like how they're indictive of the faces direction (it's more subtle with a curvier edge). Also, the iris/pupil isn't accurate in placement with the way the face landmarks are set up, so I just had it put in the middle instead.
+PHOTO REFERENCES
+https://www.marvel.com/movies
