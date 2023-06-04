@@ -1,4 +1,4 @@
-/*
+ /*
  * FaceMap class - holds all informaiton about one mapped
  * face and is able to draw itself.
  */  
@@ -7,7 +7,7 @@
 var DEBUG_MODE = true;
 
 // this can be used to set the number of sliders to show
-var NUM_SLIDERS = 3;
+var NUM_SLIDERS = 5;
 
 // other variables can be in here too
 // here's some examples for colors used
@@ -32,350 +32,488 @@ function Face() {
   // these are state variables for a face
   // (your variables should be different!)
 
-  this.skin_value = 0 // Range; 0-3 [4 values]
-  this.hair_value = 2 // Range; 0-3 [4 values]
-  this.vibe_value = 1 // Range; 0-1 [2 values]
+  // SLIDER DEFAULTS
+  this.skin_value = 2; // Range; 0-2 [3 values]
+  this.hair_value = 1; // Range; 0-2 [3 values]
+  this.tilt_value = 0; // Range; ? [? values]
+  this.color_value = 1;
+  this.g_value = 1;
+
+  // FACIAL FEATURE VARIABLES
+  this.inner_browY = map(this.eyeBHead, 0, 100, -0.2, 0.2);
+  this.outer_browY = map(this.eyeBEnd, 0, 100, 0, 0.4);
+  this.inner_eyeY = map(this.eyeInner, 0, 100, -0.1, 0.1);
+  this.outer_eyeY = map(this.eyeOuter, 0, 100, -0.1, 0);
+  this.upper_eyeY = map(this.upperEye, 0, 100, -0.1, 0.1);
+  this.lower_eyeY = map(this.lowerEye, 0, 100, -0.3, 0.3);
+  
+  this.cornerX = map(this.mouthWidth, 0, 100, -0.2, 0.1);
+  this.cornerY = map(this.mouthCorners, 0, 100, 0, 0.4);
+  this.upperL = map(this.upperLip, 0, 100, -0.5, 0);
+  this.lowerL = map(this.lowerLip, 0, 100, -1, 0);
+  this.chinY = 1.3;
  
-  // SKIN TONE Mask Colours
-    this.STone_1 = color('#e6e6e6');
-    this.STone_2 = color('#808080');
-    this.STone_3 = color('#454545');
+  // MASK COLOURS
+  this.STone_1 = color('#e6e6e6');
+  this.STone_2 = color('#808080');
+  this.STone_3 = color('#454545');
 
-    colorOptions = [this.STone_1, this.STone_2, this.STone_3]
-    // (colorOptions[this.skin_value])
-
-  // HAIR DARKNESS Backing Colours
-    this.HDark_1 = color('#e6e6e6');
-    this.HDark_2 = color('#808080');
-    this.HDark_3 = color('#454545');
-
-    hairOptions = [this.HDark_1, this.HDark_2, this.HDark_3]
-    // (hairOptions[this.hair_value])
-
-  // MASCULINE VS. FEMININE Accent Colours
-    this.fem = color('#e6e6e6');
-    this.masc = color('#808080');
-
-    mascVfemOptions = [this.fem, this.masc]
+  colorOptions = [this.STone_1, this.STone_2, this.STone_3]
 
   /*
    * Draw the face with position lists that include:
+   *    chin, right_eye, left_eye, right_eyebrow, left_eyebrow
+   *    bottom_lip, top_lip, nose_tip, nose_bridge, 
    *    left_eyebrow, right_eyebrow, left_eye, right_eye, 
    *    nose_bridge, nose_tip, bottom_lip, top_lip, chin
    */  
 
   this.draw = function(positions) {
-
-    // Tilt Value
     angleMode(DEGREES);
     rotate(this.tilt_value);
 
     this.chin = positions.chin[8];
-    this.Left_maskpoint1 = positions.chin[0]
-    this.Left_maskpoint2 = positions.chin[4]
-    this.Lmid_maskpoint = positions.chin[6]
+    this.noseY = positions.nose_bridge[3];
 
-    this.Mid_maskpoint = positions.chin[8]
-
-    this.Rmid_maskpoint = positions.chin[10]
-    this.Right_maskpoint1 = positions.chin[12]
-    this.Right_maskpoint2 = positions.chin[16]
-
-    // Backing Mask
+    // BACKING MASK
+    push();
+    translate(this.noseY[0], this.noseY[1]);
     noStroke();
-    fill((hairOptions[this.hair_value]));
-    
+    fill(0);    
     beginShape();
-      vertex(this.Left_maskpoint1[0] -0.5, this.Left_maskpoint1[1] -1.1);
+      vertex(-2, -2);
         bezierVertex(
-          0, -1.85, 
-          0, -1.85, 
-          this.Right_maskpoint2[0] +0.5, this.Right_maskpoint2[1] -1.1
-          ); // TLeft->TRight
-
+          0, -1.7, 
+          0, -1.7, 
+          2, -2
+        ); // TLeft->TRight
         bezierVertex(
-          this.Right_maskpoint1[0] +0.48, this.Right_maskpoint1[1] -0.35, 
-          this.Right_maskpoint1[0] +0.45, this.Right_maskpoint1[1] -0.25, 
-          this.Right_maskpoint1[0] +0.4, this.Right_maskpoint1[1]
-          ); // TRight->BRight *
+          1.9, 0.2, 
+          1.9, 0.2, 
+          1.9, 0.2
+        ); // TRight->BRight *
         bezierVertex(
-          this.Rmid_maskpoint[0] +0.3, this.Rmid_maskpoint[1] +0.25, 
-          this.Rmid_maskpoint[0] +0.2, this.Rmid_maskpoint[1] +0.35, 
-          this.Mid_maskpoint[0], this.Mid_maskpoint[1] +0.1
-          ); // BRight->BMiddle %
-
+          1.7, 1.9, 
+          0.9, 1.7, 
+          0, 2
+        ); // BRight->BMiddle %
         bezierVertex(
-          this.Lmid_maskpoint[0] -0.2, this.Lmid_maskpoint[1] +0.35, 
-          this.Lmid_maskpoint[0] -0.3, this.Lmid_maskpoint[1] +0.25, 
-          this.Left_maskpoint2[0] -0.4, this.Left_maskpoint2[1]
-          ); // BMiddle->BLeft %
+          -0.9, 1.7, 
+          -1.7, 1.9, 
+          -1.9, 0.2
+        ); // BMiddle->BLeft %
         bezierVertex(
-          this.Left_maskpoint2[0] -0.45, this.Left_maskpoint2[1] -0.25, 
-          this.Left_maskpoint2[0] -0.48, this.Left_maskpoint2[1] -0.35, 
-          this.Left_maskpoint1[0] -0.5, this.Left_maskpoint1[1] -1          
-          ); // BLeft->TLeft *this.
+          -1.9, 0.2,
+          -1.9, 0.2, 
+          -2, -1.9
+        ); // BLeft->TLeft *
     endShape();
 
-    // Face Mask
+    // MAIN MASK
     noStroke();
-    fill(colorOptions[this.skin_value]);
-
+    fill(colorOptions[this.color_value]);
     beginShape();
-      vertex(this.Left_maskpoint1[0] -0.4, this.Left_maskpoint1[1] -1);
+      vertex(-1.9, -1.9);
         bezierVertex(
-          0, -1.75, 
-          0, -1.75, 
-          this.Right_maskpoint2[0] +0.4, this.Right_maskpoint2[1] -1
-          ); // TLeft->TRight
-
+          0, -1.6, 
+          0, -1.6, 
+          1.9, -1.9
+        ); // TLeft->TRight
         bezierVertex(
-          this.Right_maskpoint1[0] +0.38, this.Right_maskpoint1[1] -0.25, 
-          this.Right_maskpoint1[0] +0.35, this.Right_maskpoint1[1] -0.15, 
-          this.Right_maskpoint1[0] +0.3, this.Right_maskpoint1[1]
-          ); // TRight->BRight *
+          1.8, 0.2, 
+          1.8, 0.2, 
+          1.8, 0.2
+        ); // TRight->BRight *
         bezierVertex(
-          this.Rmid_maskpoint[0] +0.2, this.Rmid_maskpoint[1] +0.15, 
-          this.Rmid_maskpoint[0] +0.1, this.Rmid_maskpoint[1] +0.25, 
-          this.Mid_maskpoint[0], this.Mid_maskpoint[1]
-          ); // BRight->BMiddle %
-
+          1.6, 1.9, 
+          0.8, 1.6, 
+          0, 1.9
+        ); // BRight->BMiddle %
         bezierVertex(
-          this.Lmid_maskpoint[0] -0.1, this.Lmid_maskpoint[1] +0.25, 
-          this.Lmid_maskpoint[0] -0.2, this.Lmid_maskpoint[1] +0.15, 
-          this.Left_maskpoint2[0] -0.3, this.Left_maskpoint2[1]
-          ); // BMiddle->BLeft %
+          -0.8, 1.6, 
+          -1.6, 1.9, 
+          -1.8, 0.2
+        ); // BMiddle->BLeft %
         bezierVertex(
-          this.Left_maskpoint2[0] -0.35, this.Left_maskpoint2[1] -0.15, 
-          this.Left_maskpoint2[0] -0.38, this.Left_maskpoint2[1] -0.25, 
-          this.Left_maskpoint1[0] -0.4, this.Left_maskpoint1[1] -1          
-          ); // BLeft->TLeft *this.
+          -1.8, 0.2, 
+          -1.8, 0.2, 
+          -1.9, -1.9
+        ); // BLeft->TLeft *this.
     endShape();
+    pop();
 
-    ///////// NOSE /////////
+    // NOSE
+    push();
+    translate(this.noseY[0], this.noseY[1]);
     noStroke();
     fill(0);
-
-    // Nose height & subtle direction indicator
-      this.noseY = segment_average([positions.nose_bridge[1], positions.top_lip[2]]);
-      this.noseTipX = positions.nose_tip[2]
-
     beginShape();
-      vertex(-0.55, (this.noseY[0] +0.15)); 
+      vertex(-0.55, 0.15); 
         bezierVertex(
-          -0.2, (this.noseY[0] -0.06), 
-          -0.18, (this.noseY[0] +0.08), 
-          (this.noseTipX[0])/2, (this.noseY[0] +0.1) // Upper nose tip
+          -0.2, -0.06, 
+          -0.18, 0.08, 
+          0, 0.1 // Upper nose tip
         );
         bezierVertex(
-          0.18, (this.noseY[0] +0.08), 
-          0.2, (this.noseY[0] -0.06), 
-          0.55, (this.noseY[0] +0.15) 
+          0.18, 0.08, 
+          0.2, -0.06, 
+          0.55, 0.15 
         );
         bezierVertex(
-          0.2, (this.noseY[0] +0.1), 
-          0.18, (this.noseY[0] +0.2), 
-          (this.noseTipX[0])/2, (this.noseY[0] +0.2) // Lower nose tip
+          0.2, 0.1, 
+          0.18, 0.2, 
+          0, 0.2 // Lower nose tip
         );
         bezierVertex(
-          -0.18, (this.noseY[0] +0.2), 
-          -0.2, (this.noseY[0] +0.1), 
-          -0.55, (this.noseY[0] +0.15)
+          -0.18, 0.2, 
+          -0.2, 0.1, 
+          -0.55, 0.15
         );
     endShape();
+    pop();
 
-    ///////// EYEBROWS /////////
-    noStroke();
-    fill(0);
+    // EYEBROWS & EYES; drawn based on 1 of 3 skin tones
+    if(this.skin_value == 0){ // Draw 'happy' eyebrows/eyes
+      push();
+      translate(this.noseY[0], this.noseY[1]);
 
-    // Inner & Outer Brow points
-      this.LBrow_inner = positions.left_eyebrow[4];
-      this.LBrow_outer = positions.left_eyebrow[0];
-      this.RBrow_inner = positions.right_eyebrow[0];
-      this.RBrow_outer = positions.right_eyebrow[4];
+      strokeWeight(0.25);
+      noStroke();
+      fill(0);
+      this.eyeBHead = -0.1;
+      this.eyeBEnd = 0;
+      this.eyeInner =  -0.05;
+      this.eyeOuter =  -0.1;
+      this.upperEye =  -0.1; 
+      this.lowerEye = -0.528;
+      this.inner_browY = this.eyeBHead;
+      this.outer_browY = this.eyeBEnd;
+      this.inner_eyeY = this.eyeInner;
+      this.outer_eyeY = this.eyeOuter;
+      this.upper_eyeY = this.upperEye;
+      this.lower_eyeY = this.lowerEye;
 
-    // LEFT BROW
-    beginShape();
-      vertex(this.LBrow_inner[0] +0.2, (this.LBrow_inner[1]));
-        bezierVertex(
-          this.LBrow_inner[0], (this.LBrow_inner[1] +0.3), 
-          this.LBrow_outer[0] -0.1, (this.LBrow_outer[1] -0.5), 
-          this.LBrow_outer[0] -0.2, (this.LBrow_outer[1]+ 0.25)
-        );
-        bezierVertex(
-          this.LBrow_outer[0] -0.1, (this.LBrow_outer[1] -0.3), 
-          this.LBrow_inner[0], (this.LBrow_inner[1] +0.4), 
-          this.LBrow_inner[0] +0.2, (this.LBrow_inner[1])
-        );
-    endShape();
-    
-    // RIGHT BROW
-    beginShape();
-      vertex(this.RBrow_inner[0] -0.2, (this.RBrow_inner[1]));
-        bezierVertex(
-          this.RBrow_inner[0], (this.RBrow_inner[1] +0.3), 
-          this.RBrow_outer[0] +0.1, (this.RBrow_outer[1] -0.5), 
-          this.RBrow_outer[0] +0.2, (this.RBrow_outer[1]+ 0.25)
-        );
-        bezierVertex(
-          this.RBrow_outer[0] +0.1, (this.RBrow_outer[1] -0.3), 
-          this.RBrow_inner[0], (this.RBrow_inner[1] +0.4), 
-          this.RBrow_inner[0] -0.2, (this.RBrow_inner[1])
-        );
-    endShape();
-
-    ///////// EYES /////////
-    strokeWeight(0.25);
-    fill(0);
-
-    // inner >> outer
-      this.LEye_outer = positions.left_eye[0];
-      this.LEye_upperlid_1 = positions.left_eye[1];
-      this.LEye_upperlid_2 = positions.left_eye[2];
-      this.LEye_inner = positions.left_eye[3];
-    // outer >> inner
-      this.LEye_lowerlid_1 = positions.left_eye[4];
-      this.LEye_lowerlid_2 = positions.left_eye[5];
-
-    // inner >> outer
-      this.REye_outer = positions.right_eye[3];
-      this.REye_upperlid_1 = positions.right_eye[2];
-      this.REye_upperlid_2 = positions.right_eye[1];
-      this.REye_inner = positions.right_eye[0];
-    // outer >> inner
-      this.REye_lowerlid_1 = positions.right_eye[4];
-      this.REye_lowerlid_2 = positions.right_eye[5];
-
-    // Left Eye Pupil/iris
-      this.IrisL = segment_average([positions.left_eye[0], positions.left_eye[3]]);
-
-    // Left Right Pupil/iris
-     this.IrisR = segment_average([positions.right_eye[0], positions.right_eye[3]]);
-
-    // LEFT EYE 
-    beginShape();
-      vertex((this.LEye_outer[0] -0.2), this.LEye_outer[1]);
-        bezierVertex(
-          this.LEye_upperlid_1[0], (this.LEye_upperlid_1[1] -0.1),
-          this.LEye_upperlid_2[0], (this.LEye_upperlid_2[1] -0.1),
-          (this.LEye_inner[0] +0.2), this.LEye_inner[1]
-        );
-        bezierVertex(
-          this.LEye_lowerlid_1[0], (this.LEye_lowerlid_1[1] +0.1),
-          this.LEye_lowerlid_2[0], (this.LEye_lowerlid_2[1] +0.1),
-          (this.LEye_outer[0] -0.2), this.LEye_outer[1]
-        );
-    endShape();
-
-   // RIGHT EYE
-    beginShape();
-      vertex((this.REye_outer[0] +0.2), this.REye_outer[1]);
-        bezierVertex(
-          this.REye_upperlid_1[0], (this.REye_upperlid_1[1] -0.1), 
-          this.REye_upperlid_2[0], (this.REye_upperlid_2[1] -0.1), 
-          (this.REye_inner[0] -0.2), this.REye_inner[1]
-        );
-        bezierVertex(
-          this.REye_lowerlid_1[0], (this.REye_lowerlid_1[1] +0.1), 
-          this.REye_lowerlid_2[0], (this.REye_lowerlid_2[1] +0.1), 
-          (this.REye_outer[0] +0.2), this.REye_outer[1]
-        );
-    endShape();
-
-    // IRIS
-    fill(mascVfemOptions[this.vibe_value]);
-    ellipse(this.IrisL[0], this.IrisL[1], 0.2);
-    ellipse(this.IrisR[0], this.IrisR[1], 0.2);
-
-    // PUPIL
-    fill(0);
-    ellipse(this.IrisL[0], this.IrisL[1], 0.1);
-    ellipse(this.IrisR[0], this.IrisR[1], 0.1);
-
-    ///////// MOUTH /////////
-    noStroke(0);
-    fill(0);
-
-    // Main Lip points
-      this.lipCorner1 = positions.top_lip[0];
-      this.upperLip = positions.top_lip[3];
-      this.bottomLip = positions.bottom_lip[3];
-      this.lipCorner2 = positions.top_lip[6];
-
-    // Mid Lip points
-      this.upperLmid = segment_average([positions.top_lip[2], positions.top_lip[4]]);
-      this.lowerLmid = segment_average([positions.bottom_lip[2], positions.bottom_lip[4]]);
-
-    beginShape();
-      vertex(this.lipCorner1[0], this.lipCorner1[1]);
-        bezierVertex(
-          this.upperLmid[0], this.upperLip[1], 
-          this.upperLmid[0], this.upperLip[1], 
-          this.lipCorner2[0], this.lipCorner2[1]
-        );
-        bezierVertex(
-          this.lowerLmid[0], this.bottomLip[1], 
-          this.lowerLmid[0], this.bottomLip[1], 
-          this.lipCorner1[0], this.lipCorner1[1]
-        );
-    endShape();
-    
-    // Smile Lines * Left to Right
-    beginShape();
-      vertex(this.lipCorner1[0] -0.05, this.lipCorner1[1] -0.2);
-        bezierVertex(
-          (this.lipCorner1[0] -0.35), (this.lipCorner1[1] -0.1), 
-          (this.lipCorner1[0] -0.35), (this.lipCorner1[1] +0.1), 
-          (this.lipCorner1[0] -0.05), (this.lipCorner1[1] +0.2)
-        );
-        bezierVertex(
-          (this.lipCorner1[0] -0.25), (this.lipCorner1[1] +0.1), 
-          (this.lipCorner1[0] -0.25), (this.lipCorner1[1] -0.1), 
-          this.lipCorner1[0] -0.05, this.lipCorner1[1] -0.2
+      // LEFT BROW
+      beginShape();
+        vertex(-0.2, (this.inner_browY -1.2));
+          bezierVertex(
+            -0.4, (this.inner_browY -0.6), 
+            -1.2, (this.outer_browY -1.6), 
+            -1.6, (this.outer_browY -1)
           );
-    endShape();
+          bezierVertex(
+            -1.2, (this.outer_browY -1.4), 
+            -0.4, (this.inner_browY -0.5), 
+            -0.2, (this.inner_browY -1.2)
+          );
+      endShape();
 
-    beginShape();
-      vertex(this.lipCorner2[0] +0.05, this.lipCorner2[1] -0.2);
+      // LEFT EYE 
+      beginShape();
+      vertex(-0.35, (this.inner_eyeY -0.45));
         bezierVertex(
-          (this.lipCorner2[0] +0.35), (this.lipCorner2[1] -0.1), 
-          (this.lipCorner2[0] +0.35), (this.lipCorner2[1] +0.1), 
-          (this.lipCorner2[0] +0.05), (this.lipCorner2[1] +0.2) 
+          -0.8, (this.upper_eyeY -0.8), 
+          -1, (this.upper_eyeY -0.8), 
+          -1.35, this.outer_eyeY-0.4
         );
         bezierVertex(
-          (this.lipCorner2[0] +0.25), (this.lipCorner2[1] +0.1), 
-          (this.lipCorner2[0] +0.25), (this.lipCorner2[1] -0.1), 
-          this.lipCorner2[0] +0.05, this.lipCorner2[1] -0.2
+          -1, (this.lower_eyeY -0.5), 
+          -0.8, (this.lower_eyeY -0.5), 
+          -0.35, this.inner_eyeY-0.45
         );
-    endShape();
+      endShape();
+      
+      // RIGHT BROW
+      beginShape();
+        vertex(0.2, (this.inner_browY-1.2));
+          bezierVertex(
+            0.4, (this.inner_browY -0.6), 
+            1.2, (this.outer_browY -1.6), 
+            1.6, (this.outer_browY -1)
+          );
+          bezierVertex(
+            1.2, (this.outer_browY -1.4), 
+            0.4, (this.inner_browY -0.5), 
+            0.2, (this.inner_browY -1.2)
+          );
+      endShape();
 
-    ///////// CHIN DETAIL /////////
+     // RIGHT EYE
+      beginShape();
+        vertex(0.35, (this.inner_eyeY -0.45));
+          bezierVertex(
+            0.8, (this.upper_eyeY -0.8), 
+            1, (this.upper_eyeY -0.8), 
+            1.35, (this.outer_eyeY -0.4)
+          );
+          bezierVertex(
+            1, (this.lower_eyeY -0.5),
+            0.8, (this.lower_eyeY -0.5), 
+            0.35, (this.inner_eyeY -0.45)
+          );
+      endShape();
+
+      pop();
+
+    } else if(this.skin_value == 1){ // Draw 'sad' eyebrows/eyes
+      push();
+      translate(this.noseY[0], this.noseY[1]);
+
+      strokeWeight(0.25);
+      noStroke();
+      fill(0);
+      this.eyeBHead = -0.2;
+      this.eyeBEnd = 0.4;
+      this.eyeInner = 0.1;
+      this.eyeOuter = 0;
+      this.upperEye = 0.1; 
+      this.lowerEye = 0.042;
+      this.inner_browY = this.eyeBHead;
+      this.outer_browY = this.eyeBEnd;
+      this.inner_eyeY = this.eyeInner;
+      this.outer_eyeY = this.eyeOuter;
+      this.upper_eyeY = this.upperEye;
+      this.lower_eyeY = this.lowerEye;
+
+      // LEFT BROW
+      beginShape();
+        vertex(-0.2, (this.inner_browY -1.2));
+          bezierVertex(-0.4, (this.inner_browY -0.6), -1.2, (this.outer_browY -1.6), -1.6, (this.outer_browY -1));
+          bezierVertex(-1.2, (this.outer_browY -1.4), -0.4, (this.inner_browY -0.5), -0.2, (this.inner_browY -1.2));
+      endShape();
+
+      // LEFT EYE 
+      beginShape();
+      vertex(-0.35, (this.inner_eyeY -0.45));
+        bezierVertex(-0.8, (this.upper_eyeY -0.8), -1, (this.upper_eyeY -0.8), -1.35, this.outer_eyeY-0.4);
+        bezierVertex(-1, (this.lower_eyeY -0.5), -0.8, (this.lower_eyeY -0.5), -0.35, this.inner_eyeY-0.45);
+      endShape();
+      
+      // RIGHT BROW
+      beginShape();
+        vertex(0.2, (this.inner_browY-1.2));
+          bezierVertex(0.4, (this.inner_browY -0.6), 1.2, (this.outer_browY -1.6), 1.6, (this.outer_browY -1));
+          bezierVertex(1.2, (this.outer_browY -1.4), 0.4, (this.inner_browY -0.5), 0.2, (this.inner_browY -1.2));
+      endShape();
+
+     // RIGHT EYE
+      beginShape();
+        vertex(0.35, (this.inner_eyeY -0.45));
+          bezierVertex(0.8, (this.upper_eyeY -0.8), 1, (this.upper_eyeY -0.8), 1.35, (this.outer_eyeY -0.4));
+          bezierVertex(1, (this.lower_eyeY -0.5), 0.8, (this.lower_eyeY -0.5), 0.35, (this.inner_eyeY -0.45));
+      endShape();
+
+      pop();
+
+    } else if(this.skin_value == 2){ // Draw 'angry' eyebrows/eyes
+      push();
+      translate(this.noseY[0], this.noseY[1]);
+
+      strokeWeight(0.25);
+      noStroke();
+      fill(0);
+      this.eyeBHead = 0.2
+      this.eyeBEnd = 0
+      this.eyeInner = 0.1
+      this.eyeOuter = -0.1
+      this.upperEye = 0.1
+      this.lowerEye = 0.342
+      this.inner_browY = this.eyeBHead;
+      this.outer_browY = this.eyeBEnd;
+      this.inner_eyeY = this.eyeInner;
+      this.outer_eyeY = this.eyeOuter;
+      this.upper_eyeY = this.upperEye;
+      this.lower_eyeY = this.lowerEye;
+
+      // LEFT BROW
+      beginShape();
+        vertex(-0.2, (this.inner_browY -1.2));
+          bezierVertex(-0.4, (this.inner_browY -0.6), -1.2, (this.outer_browY -1.6), -1.6, (this.outer_browY -1));
+          bezierVertex(-1.2, (this.outer_browY -1.4), -0.4, (this.inner_browY -0.5), -0.2, (this.inner_browY -1.2));
+      endShape();
+
+      // LEFT EYE 
+      beginShape();
+      vertex(-0.35, (this.inner_eyeY -0.45));
+        bezierVertex(-0.8, (this.upper_eyeY -0.8), -1, (this.upper_eyeY -0.8), -1.35, this.outer_eyeY-0.4);
+        bezierVertex(-1, (this.lower_eyeY -0.5), -0.8, (this.lower_eyeY -0.5), -0.35, this.inner_eyeY-0.45);
+      endShape();
+      
+      // RIGHT BROW
+      beginShape();
+        vertex(0.2, (this.inner_browY-1.2));
+          bezierVertex(0.4, (this.inner_browY -0.6), 1.2, (this.outer_browY -1.6), 1.6, (this.outer_browY -1));
+          bezierVertex(1.2, (this.outer_browY -1.4), 0.4, (this.inner_browY -0.5), 0.2, (this.inner_browY -1.2));
+      endShape();
+
+     // RIGHT EYE
+      beginShape();
+        vertex(0.35, (this.inner_eyeY -0.45));
+          bezierVertex(0.8, (this.upper_eyeY -0.8), 1, (this.upper_eyeY -0.8), 1.35, (this.outer_eyeY -0.4));
+          bezierVertex(1, (this.lower_eyeY -0.5), 0.8, (this.lower_eyeY -0.5), 0.35, (this.inner_eyeY -0.45));
+      endShape();
+
+      pop();
+
+    }
+
+    // MOUTH; drawn based on 1 of 3 hair tones
+    if(this.hair_value == 0){ // Draw 'happy' mouth
+      push();
+      translate(this.noseY[0], this.noseY[1]);
+      noStroke(0);
+      fill(0);
+      this.mouthWidth = 0.1;
+      this.mouthCorners = 0;
+      this.upperLip = -0.5;
+      this.lowerLip = 0;
+      this.cornerX = this.mouthWidth;
+      this.cornerY = this.mouthCorners;
+      this.upperL = this.upperLip;
+      this.lowerL = this.lowerLip;
+
+      beginShape();
+        vertex(-(this.cornerX +0.8), (this.cornerY +0.6));
+          bezierVertex(
+            0, (this.upperL +0.8), 
+            0, (this.upperL +0.8), 
+            (this.cornerX +0.8), (this.cornerY +0.6)
+          );
+          bezierVertex(
+            0, (this.lowerL +1.8), 
+            0, (this.lowerL +1.8), 
+            -(this.cornerX +0.8), (this.cornerY +0.6)
+          );
+      endShape();
+      
+      // Smile Lines * Left to Right
+      beginShape();
+        vertex(-0.6, 0.5);
+          bezierVertex(-(this.cornerX +1), (this.cornerY +0.45), -(this.cornerX +1), (this.cornerY +0.7), -(this.cornerX +0.8), (this.cornerY +0.9));
+          bezierVertex(-(this.cornerX +0.9), (this.cornerY +0.7), -(this.cornerX +0.9), (this.cornerY +0.45), -0.6, 0.5);
+      endShape();
+  
+      beginShape();
+        vertex(0.6, 0.5);
+          bezierVertex((this.cornerX +1), (this.cornerY +0.45), (this.cornerX +1), (this.cornerY +0.7), (this.cornerX +0.8), (this.cornerY +0.9));
+          bezierVertex((this.cornerX +0.9), (this.cornerY +0.7), (this.cornerX +0.9), (this.cornerY +0.45), 0.6, 0.5);
+      endShape();
+
+      pop();
+
+    } else if(this.hair_value == 1){ // Draw 'sad' mouth
+      push();
+      translate(this.noseY[0], this.noseY[1]);
+      noStroke(0);
+      fill(0);
+      this.mouthWidth = 0.007;
+      this.mouthCorners = 0.4;
+      this.upperLip = -0.5;
+      this.lowerLip = -1;
+      this.cornerX = this.mouthWidth;
+      this.cornerY = this.mouthCorners;
+      this.upperL = this.upperLip;
+      this.lowerL = this.lowerLip;
+
+      beginShape();
+        vertex(-(this.cornerX +0.8), (this.cornerY +0.6));
+          bezierVertex(0, (this.upperL +0.8), 0, (this.upperL +0.8), (this.cornerX +0.8), (this.cornerY +0.6));
+          bezierVertex(0, (this.lowerL +1.8), 0, (this.lowerL +1.8), -(this.cornerX +0.8), (this.cornerY +0.6));
+      endShape();
+      
+      // Smile Lines * Left to Right
+      beginShape();
+        vertex(-0.6, 0.5);
+          bezierVertex(-(this.cornerX +1), (this.cornerY +0.45), -(this.cornerX +1), (this.cornerY +0.7), -(this.cornerX +0.8), (this.cornerY +0.9));
+          bezierVertex(-(this.cornerX +0.9), (this.cornerY +0.7), -(this.cornerX +0.9), (this.cornerY +0.45), -0.6, 0.5);
+      endShape();
+  
+      beginShape();
+        vertex(0.6, 0.5);
+          bezierVertex((this.cornerX +1), (this.cornerY +0.45), (this.cornerX +1), (this.cornerY +0.7), (this.cornerX +0.8), (this.cornerY +0.9));
+          bezierVertex((this.cornerX +0.9), (this.cornerY +0.7), (this.cornerX +0.9), (this.cornerY +0.45), 0.6, 0.5);
+      endShape();
+
+      pop();
+
+    } else if(this.hair_value == 2){ // Draw 'angry' mouth
+      push();
+      translate(this.noseY[0], this.noseY[1]);
+      noStroke(0);
+      fill(0);
+      this.mouthWidth = 0.1;
+      this.mouthCorners = 0.3;
+      this.upperLip = -0.25;
+      this.lowerLip = -0.02;
+      this.cornerX = this.mouthWidth;
+      this.cornerY = this.mouthCorners;
+      this.upperL = this.upperLip;
+      this.lowerL = this.lowerLip;
+  
+      beginShape();
+        vertex(-(this.cornerX +0.8), (this.cornerY +0.6));
+          bezierVertex(0, (this.upperL +0.8), 0, (this.upperL +0.8), (this.cornerX +0.8), (this.cornerY +0.6));
+          bezierVertex(0, (this.lowerL +1.8), 0, (this.lowerL +1.8), -(this.cornerX +0.8), (this.cornerY +0.6));
+      endShape();
+      
+      // Smile Lines * Left to Right
+      beginShape();
+        vertex(-0.6, 0.5);
+          bezierVertex(-(this.cornerX +1), (this.cornerY +0.45), -(this.cornerX +1), (this.cornerY +0.7), -(this.cornerX +0.8), (this.cornerY +0.9));
+          bezierVertex(-(this.cornerX +0.9), (this.cornerY +0.7), -(this.cornerX +0.9), (this.cornerY +0.45), -0.6, 0.5);
+      endShape();
+  
+      beginShape();
+        vertex(0.6, 0.5);
+          bezierVertex((this.cornerX +1), (this.cornerY +0.45), (this.cornerX +1), (this.cornerY +0.7), (this.cornerX +0.8), (this.cornerY +0.9));
+          bezierVertex((this.cornerX +0.9), (this.cornerY +0.7), (this.cornerX +0.9), (this.cornerY +0.45), 0.6, 0.5);
+      endShape();
+
+      pop();
+
+    }
+
+    // CHIN DETAIL; not drawn if lower lip/mouth corners are too far down.
+    if(this.mouthCorners == 0.4 && this.lowerLip <= -0.48){
+    push();
+    translate(this.noseY[0], this.noseY[1]);
     noStroke(0);
     fill(0);
 
-    this.chinDetail = positions.chin[8];
-
     beginShape();
-      vertex(this.chinDetail[0], this.chinDetail[1] -0.15); 
-        bezierVertex(
-          this.chinDetail[0] +0.15, (this.chinDetail[1] -0.25), 
-          this.chinDetail[0] +0.15, (this.chinDetail[1] -0.35), 
-          this.chinDetail[0], (this.chin[1] -0.45)
-        );
-        bezierVertex(
-          this.chinDetail[0] +0.05, (this.chinDetail[1] -0.35), 
-          this.chinDetail[0] +0.05, (this.chinDetail[1] -0.25), 
-          this.chinDetail[0], (this.chinDetail[1] -0.15)      
-        );
+      vertex(0, this.chinY); 
+        bezierVertex(0.12, (this.chinY +0.1), 0.12, (this.chinY +0.2), 0, (this.chinY +0.3));
+        bezierVertex(0.2, (this.chinY +0.2), 0.2, (this.chinY +0.1), 0, this.chinY);
     endShape();
 
-  };
+    pop();
+
+    } else if(this.mouthCorners <= 0.38 && this.lowerLip <= -0.32) {
+      push();
+      translate(this.noseY[0], this.noseY[1]);
+      noStroke(0);
+      fill(0);
+
+      beginShape();
+        vertex(0, this.chinY); 
+          bezierVertex(0.12, (this.chinY +0.1), 0.12, (this.chinY +0.2), 0, (this.chinY +0.3));
+
+          bezierVertex(0.2, (this.chinY +0.2), 0.2, (this.chinY +0.1), 0, this.chinY);
+      endShape();
+
+      pop();
+
+    }
+
+  }
 
   /* set internal properties based on list numbers 0-100 */
   this.setProperties = function(settings) {
     this.skin_value = int(map(settings[0], 0, 100, 0, 2));
     this.hair_value = int(map(settings[1], 0, 100, 0, 2));
-    this.vibe_value = int(map(settings[2], 0, 100, 0, 1));
-
+    this.tilt_value = map(settings[2], 0, 100, -4, 4);
+    this.color_value = int(map(settings[3], 0, 100, 0, 2));
+    this.g_value = int(map(settings[4], 0, 100, 0, 3));
   }
 
   /* get internal properties as list of numbers 0-100 */
@@ -383,8 +521,23 @@ function Face() {
     let settings = new Array(3);
     settings[0] = int(map(this.skin_value, 0, 2, 0, 100));
     settings[1] = int(map(this.hair_value, 0, 2, 0, 100));
-    settings[2] = int(map(this.vibe_value, 0, 1, 0, 100));
-
+    settings[2] = map(this.tilt_value, -4, 4, 0, 100);
+    settings[3] = int(map(this.color_value, 0, 2, 0, 100));
+    settings[4] = int(map(this.g_value, 0, 3, 0, 100));
     return settings;
   }
 }
+
+// Shock Face
+// 0,
+// 25,
+// 100,
+// 100,
+// 100,
+// 100,
+// 0,
+// 66,
+// null,
+// 53,
+// 60,
+// 0
