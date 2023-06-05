@@ -69,15 +69,14 @@ function Face() {
 
   this.draw = function(positions) {
     this.faceY = positions.nose_bridge[3]; // centre point of most mask elements
-    this.forehead = positions.nose_bridge[1]; // origin point for the top of the mask
-    this.noseHeight = positions.nose_bridge[3]; // nose height
+    this.noseY = positions.nose_bridge[3]; // nose height
     this.eyeY = positions.left_eye[0]; // eye placement point
     this.mouthY = positions.top_lip[3]; // mouth placement point
-
+    this.chinX = positions.chin[8]; // x orientation point
 
     // BACKING MASK
     push();
-    translate(this.faceY[0], this.faceY[1]);
+    translate(this.chinX[0], this.faceY[1]);
     noStroke();
     fill(0);    
     beginShape();
@@ -95,7 +94,7 @@ function Face() {
         bezierVertex(
           1.7, 1.9, 
           0.9, 1.7, 
-          0, 2
+          this.chinX[0], 2
         ); // BRight->BMiddle %
         bezierVertex(
           -0.9, 1.7, 
@@ -127,7 +126,7 @@ function Face() {
         bezierVertex(
           1.6, 1.9, 
           0.8, 1.6, 
-          0, 1.9
+          this.chinX[0], 1.9
         ); // BRight->BMiddle %
         bezierVertex(
           -0.8, 1.6, 
@@ -144,7 +143,7 @@ function Face() {
 
     // NOSE
     push();
-    translate(this.noseHeight[0], (this.noseHeight[1]) -0.05);
+    translate(this.chinX[0], (this.noseY[1] -0.05));
     noStroke();
     fill(0);
     beginShape();
@@ -175,7 +174,7 @@ function Face() {
     // EYEBROWS; drawn based on fem./masc.
     if(this.gen_value == 0){ // Draw 'sad' eyebrows
       push();
-      translate(this.faceY[0], (this.eyeY[1]) +0.5);
+      translate(this.chinX[0], (this.eyeY[1]) +0.5);
 
       strokeWeight(0.25);
       noStroke();
@@ -200,7 +199,7 @@ function Face() {
 
     } else if(this.gen_value == 1){ // Draw 'angry' eyebrows
       push();
-      translate(this.faceY[0], (this.eyeY[1]) +0.5);
+      translate(this.chinX[0], (this.eyeY[1]) +0.5);
 
       strokeWeight(0.25);
       noStroke();
@@ -228,7 +227,7 @@ function Face() {
     // EYES; drawn based teeth being visible
     if(this.teeth_value == 0){ // Draw 'sad' eyes
       push();
-      translate(this.faceY[0], (this.eyeY[1]) +0.5);
+      translate(this.chinX[0], (this.eyeY[1]) +0.5);
 
       strokeWeight(0.25);
       noStroke();
@@ -261,7 +260,7 @@ function Face() {
 
     } else if(this.teeth_value == 1){ // Draw 'angry' eyes
       push();
-      translate(this.faceY[0], (this.eyeY[1]) +0.5);
+      translate(this.chinX[0], (this.eyeY[1]) +0.5);
 
       strokeWeight(0.25);
       noStroke();
@@ -297,7 +296,7 @@ function Face() {
     // MOUTH; drawn based on 1 of 3 hair tones
     if(this.hair_value == 0){ // Draw 'happy' mouth
       push();
-      translate(this.faceY[0], (this.mouthY[1]) -0.5);
+      translate(this.chinX[0], (this.mouthY[1]) -0.5);
       noStroke(0);
       fill(0);
       this.mouthWidth = 0.1;
@@ -339,7 +338,7 @@ function Face() {
 
     } else if(this.hair_value == 1){ // Draw 'sad' mouth
       push();
-      translate(this.faceY[0], (this.mouthY[1]) -0.5);
+      translate(this.chinX[0], (this.mouthY[1]) -0.5);
       noStroke(0);
       fill(0);
       this.mouthWidth = 0.007;
@@ -374,7 +373,7 @@ function Face() {
 
     } else if(this.hair_value == 2){ // Draw 'angry' mouth
       push();
-      translate(this.faceY[0], (this.mouthY[1]) -0.5);
+      translate(this.chinX[0], (this.mouthY[1]) -0.5);
       noStroke(0);
       fill(0);
       this.mouthWidth = 0.1;
@@ -412,7 +411,7 @@ function Face() {
     // CHIN DETAIL; not drawn if lower lip/mouth corners are too far down.
     if(this.mouthCorners == 0.4 && this.lowerLip <= -0.48){
     push();
-    translate(this.faceY[0], this.faceY[1]);
+    translate(this.chinX[0], this.faceY[1]);
     noStroke(0);
     fill(0);
 
@@ -426,7 +425,7 @@ function Face() {
 
     } else if(this.mouthCorners <= 0.38 && this.lowerLip <= -0.32) {
       push();
-      translate(this.faceY[0], this.faceY[1]);
+      translate(this.chinX[0], this.faceY[1]);
       noStroke(0);
       fill(0);
 
@@ -461,17 +460,3 @@ function Face() {
     return settings;
   }
 }
-
-// Shock Face
-// 0,
-// 25,
-// 100,
-// 100,
-// 100,
-// 100,
-// 0,
-// 66,
-// null,
-// 53,
-// 60,
-// 0
