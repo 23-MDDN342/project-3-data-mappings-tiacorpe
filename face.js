@@ -4,15 +4,10 @@
  */  
 
 // remove this or set to false to enable full program (load will be slower)
-var DEBUG_MODE = true;
+var DEBUG_MODE = false;
 
-// this can be used to set the number of sliders to show
+// Number of sliders
 var NUM_SLIDERS = 4;
-
-// other variables can be in here too
-// here's some examples for colors used
-
-const stroke_color = [95, 52, 8];
 
 // example of a global function
 // given a segment, this returns the average point [x, y]
@@ -27,10 +22,7 @@ function segment_average(segment) {
   return [sum_x / s_len , sum_y / s_len ];
 }
 
-// This where you define your own face object
 function Face() {
-  // these are state variables for a face
-  // (your variables should be different!)
 
   // SLIDER DEFAULTS
   this.color_value = 2; // [3 values]
