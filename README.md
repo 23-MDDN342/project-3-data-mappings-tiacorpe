@@ -2,12 +2,10 @@
 [![Open in Visual Studio Code](https://classroom.github.com/assets/open-in-vscode-718a45dd9cf7e7f842a935f5ebbe5719a5e09af4491e668f4dbf3b35d5cca122.svg)](https://classroom.github.com/online_ide?assignment_repo_id=11103455&assignment_repo_type=AssignmentRepo)
 ## 2023 MDDN342 Assignment 3: Data Mappings
 
-Swapped out the eternals photo for this one; I think it was having trouble with it because it's a bit dim & zoomed out.
-Also adjusted the training values a bit for the teeth. Decided it has to be a proper cheesey smile for it to count as a 'yes'. I relabeled the slider accordingly.
+For this project, the aim was to map attributes of faces in images onto our own parameterized faces. For this, I chose to reuse code from my previous project, and continue with the aesthetic of exaggerated theatre masks. For the masks features, I wanted the placement to remain relatively controlled and intact, so I had them change according to the y-value of the nose_bridge, left_eye, top_lip, and chin (with addtional tweaks). These make each mask a little more distinctive based on the placement of the features alone.
 
-In saying that, despite the training values being correct for their corresponding images, when those same images come up in the training quiz they're not always the same. Maybe I just assumed they would be, not really sure if it shows a fault in the training, the system in recognising faces, or all of the above?
-
-For the most part though, when I did the quiz's I was getting more right than wrong. I've found the key thing it struggles with is the fem./masc. variable. At this stage I've done all I can though, so I've jsut mentioned these flaws more in depth in my documentation.
-
-IMAGE:
-https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.channel4.com%2Fprogrammes%2F2-broke-girls&psig=AOvVaw39BBjp1_3Al24_n8AHTYfb&ust=1686020777923000&source=images&cd=vfe&ved=0CAQQjB1qFwoTCICQ6P6Sq_8CFQAAAAAdAAAAABAD
+For the differing attributes, I chose to focus on skin tone (3 values), femininity & masculinity (2 values), cheesy smiles/teeth (2 values), & hair tone (3 values).
+    Skin Tone: this changed the mask colour (shades of grey to look more dramatic/bold).
+    Fem./Masc.: this changed the eyebrows from looking sad, to angry (e.g. stereotypical gender emotives).
+    Cheesy Smiese: this changed the eyes from looking closed, to open (e.g. not visible & visible).
+    Hair Tone: this changed the mouth.
